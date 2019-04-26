@@ -1,3 +1,4 @@
+# shellcheck disable=SC2209
 pkg_name=sed
 pkg_origin=core
 pkg_version=4.5
