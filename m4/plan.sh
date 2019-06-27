@@ -27,7 +27,7 @@ pkg_bin_dirs=(bin)
 
 do_prepare() {
   # Fix failing test `test-getopt-posix` which appears to have problems when
-  # working against Glibc 2.26.
+  # working against Glibc 2.26 through 2.29.
   #
   # TODO fn: when glibc package is upgraded, see if this patch is still
   # required (it may be fixed in the near future)
@@ -35,6 +35,10 @@ do_prepare() {
   # Thanks to:
   # https://www.redhat.com/archives/libvir-list/2017-September/msg01054.html
   patch -p1 < "$PLAN_CONTEXT/fix-test-getopt-posix-with-glibc-2.26.patch"
+
+  # Fix m4 not working with glibc 2.28 onwards
+  # Ref: https://bugs.archlinux.org/task/59562
+  patch -p1 < "$PLAN_CONTEXT/m4-1.4.18-glibc-change-work-around.patch"
 
   # Force gcc to use our ld wrapper from binutils when calling `ld`
   CFLAGS="$CFLAGS -B$(pkg_path_for binutils)/bin/"
